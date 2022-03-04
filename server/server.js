@@ -50,6 +50,9 @@ io.on("connection", (socket) => {
     devices[socket.id].touches = data.touches;
     //if (data.touches) console.log(data.touches);
     io.emit("devices", devices);
+    console.log(Object.keys(devices).length + " devices connected");
+    console.log(devices);
+    console.log("——————————————————————————————————");
   });
 
   socket.on("updatePositions", (data) => {
