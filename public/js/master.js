@@ -16,11 +16,11 @@ function setup() {
     devices = data;
     delete devices[socket.id];
 
-    topdateUI(data);
+    updateUI(data);
   });
 }
 
-function topdateUI(data) {
+function updateUI(data) {
   let container = select("#list");
   //container.addClass("row");
   container.html("");
