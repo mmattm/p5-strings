@@ -1,0 +1,5 @@
+.idea/
+node_modules/
+public/js/delaunay.js
+public/js/experiments.js
+public/js/p5.js
