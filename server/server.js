@@ -16,6 +16,7 @@ let positions_mirror = ["bottom", "left", "top", "right"];
 //It would be safer to connect it to a database as well so the data doesn't get destroyed when the server restarts
 //but we'll just use an object for simplicity.
 const devices = {};
+let shared = {};
 
 //Socket configuration
 io.on("connection", (socket) => {
@@ -23,6 +24,8 @@ io.on("connection", (socket) => {
   //it includes the socket object from which you can get the id, useful for identifying each client
   console.log(`${socket.id} connected`);
 
+  //shared = {};
+  //io.emit("shared", shared);
   // DATA STRUCTURE
   if (!socket.handshake.query["device-type"])
     devices[socket.id] = {
@@ -38,18 +41,33 @@ io.on("connection", (socket) => {
   io.emit("devices", devices);
   io.emit("connections", devices);
 
+  // Flush all shared objects
+  shared = {};
+  /*
+  Object.keys(shared).forEach((id) => {
+    //if (shared[id].device === socket.id)
+    io.emit("shared", { device: socket.id, shared: shared[id] });
+  });
+  */
+  io.emit("shared", { reset: true });
+
   socket.on("disconnect", () => {
     //when this client disconnects, lets delete its position from the object.
     delete devices[socket.id];
     //console.log(`${socket.id} disconnected`);
+
     io.emit("devices", devices);
     io.emit("connections", devices);
+    io.emit("shared", { reset: true });
+    //shared = {};
+    //io.emit("shared", shared);
   });
 
   socket.on("updateTouches", (data) => {
     devices[socket.id].touches = data.touches;
     //if (data.touches) console.log(data.touches);
     io.emit("devices", devices);
+
     console.log(Object.keys(devices).length + " devices connected");
     console.log(devices);
     console.log("——————————————————————————————————");
@@ -75,10 +93,18 @@ io.on("connection", (socket) => {
       }
     });
 
-    console.log(devices);
+    // console.log(devices);
 
     io.emit("devices", devices);
     io.emit("connections", devices);
+  });
+
+  socket.on("updateShared", (data) => {
+    shared[data.id] = data;
+    //io.emit("shared", shared);
+    io.emit("shared", { device: socket.id, shared: shared[data.id] });
+
+    console.log(shared);
   });
 });
 

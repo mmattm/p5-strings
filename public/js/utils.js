@@ -78,6 +78,10 @@ function updateTouches() {
   socket.emit("updateTouches", touchesObjet);
 }
 
+function updateSharedObject(obj) {
+  socket.emit("updateShared", obj);
+}
+
 function mouseDragged() {
   socket.emit("updateTouches", {
     id: socket.id,

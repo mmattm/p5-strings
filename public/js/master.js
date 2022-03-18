@@ -21,6 +21,7 @@ function setup() {
 }
 
 function updateUI(data) {
+  console.log(data);
   let container = select("#list");
   //container.addClass("row");
   container.html("");
