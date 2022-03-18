@@ -1,5 +1,6 @@
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  document.oncontextmenu = () => false;
 
   socket.on("devices", (data) => {
     // update neighbours datas
