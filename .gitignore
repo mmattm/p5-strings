@@ -1,5 +1,6 @@
 .idea/
 node_modules/
 public/js/delaunay.js
+public/js/ball.js
 public/js/experiments.js
 public/js/p5.js
